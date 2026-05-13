@@ -4,7 +4,7 @@
     padding: 0;
 }
 body{
-   background-color: lightgray;
+   background-color: #d3d3d3;
    margin: 0;
 }
 h1{
@@ -21,7 +21,7 @@ h1{
     margin: 0 auto;
     border-top-right-radius: 30px;
     border-top-left-radius: 30px;
-    gap: 30px;
+        
 }
 
 .form-output{

@@ -14,10 +14,12 @@ const init = (formTyupe) => {
 
     const getFormValue = new FormData(formOutput);
     const fromData = Object.fromEntries(getFormValue);
-      console.log(fromData.name);
-     
-      if (fromData.name === '') {
-          alert("Ввидите имя")
+
+    if (!(fromData.name === '')) {
+      document.cookie = `authUser=${fromData.name}; path =/; max-age=86400`
+      location.href = "manager.html"
+      } else {
+        alert("Ввидите имя")
       }
   });
 };
