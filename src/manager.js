@@ -87,7 +87,7 @@ const updateCart = () => {
         // textElement.classList.add("line-through");
         // console.log(textElement);
       } else {
-        textElement.classList.remove("line-through");
+        e.target.closest(".task-cart").querySelector(".task-text").classList.remove("line-through");
         // console.log(textElement);
       }
     }
