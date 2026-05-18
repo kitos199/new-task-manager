@@ -74,18 +74,13 @@ const updateCart = () => {
       if (taskCart) {
       taskCArt.querySelector(".task-text").textContent = `${redact}`
      }
-      // document.querySelector('.task-text').textContent=`${redact}`
     } else if (e.target.classList.contains("basket")) {
       taskCart.remove()
     } else if (e.target.classList.contains("checkbox-cart")) {
       const anyChecked = taskCart.querySelector(".checkbox-cart:checked");
       console.log(anyChecked, e.target);
-      // const card = e.target.closest('.cart');
-      // const textElement= card.querySelector('.task-text');
       if (anyChecked) {
         e.target.closest(".task-cart").querySelector(".task-text").classList.add("line-through");
-        // textElement.classList.add("line-through");
-        // console.log(textElement);
       } else {
         e.target.closest(".task-cart").querySelector(".task-text").classList.remove("line-through");
         // console.log(textElement);
