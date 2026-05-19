@@ -16,7 +16,7 @@ const markup = `<div class="bg-white w-full sm:w-[85%] md:w-[80%] lg:w-[70%] max
     <h1 class="text-2xl sm:text-3xl font-bold text-center sm:text-left">
       Привет, ${userName}
     </h1>
-    <button class="bg-slate-400 px-5 py-3 rounded-xl cursor-pointer hover:bg-slate-500 w-full sm:w-auto">Выйти</button>
+    <button class="exit bg-slate-400 px-5 py-3 rounded-xl cursor-pointer hover:bg-slate-500 w-full sm:w-auto">Выйти</button>
     </div>
     <form action="" class="flex flex-col md:flex-row justify-between gap-4 px-5 md:px-8 pb-8">
         <input id = "input-task" class="border border-sky-500 rounded-xl py-1.5 px-4 flex-1 w-full" type="text" placeholder="Введите" name="text">
@@ -41,12 +41,34 @@ const markup = `<div class="bg-white w-full sm:w-[85%] md:w-[80%] lg:w-[70%] max
 const init = () => {
   const noTask = document.querySelector("#no-task");
   const formTask = document.querySelector("form");
-  const wrapperCart = document.querySelector(".wrapper-cart")
+  const wrapperCart = document.querySelector(".wrapper-cart");
+  const exit = document.querySelector(".exit");
+  exit.addEventListener("click", () => {
+    location.href="outyput.html"
+  })
   formTask.addEventListener("submit", (e) => {
     e.preventDefault();
 
     const getFormData = Object.fromEntries(new FormData(formTask));
     const { text, task } = getFormData;
+    const arrUser=[]
+    const userObj = {
+      name: userName,
+      text: text,
+      task: task
+    }
+    localStorage.setItem("user", JSON.stringify(arrUser));
+    const storage = JSON.parse(localStorage.getItem("user"))
+    console.log("--->",storage);
+    if (arrUser.length) {
+      const getStorage = JSON.parse(locationStorage("user"))
+      console.log("===>",getStorage);
+    } else {
+      arrUser.push(userObj)
+      localStorage.setItem("user",JSON.stringify(arrUser))
+      console.log(arrUser);
+    }
+
     if (text !== "") {
       const markup = `<div class="task-cart flex  bg-[#e5dede] p-5 rounded-xl mb-5 mx-5">
         <p class="task-text text-xl text-${task}-500">${text}</p>
@@ -83,11 +105,12 @@ const updateCart = () => {
         e.target.closest(".task-cart").querySelector(".task-text").classList.add("line-through");
       } else {
         e.target.closest(".task-cart").querySelector(".task-text").classList.remove("line-through");
-        // console.log(textElement);
       }
     }
   })
 };
+
+// localStorage.setItem()
 
 document.addEventListener("DOMContentLoaded", () => {
   body.insertAdjacentHTML("afterbegin", markup);
