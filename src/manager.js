@@ -1,5 +1,7 @@
 const body = document.querySelector("body");
 
+const storageTasc =JSON.parse(localStorage.getItem("user")) || [];
+
 function getCookie() {
   const cookieValue = document.cookie.split(";");
   let userName;
@@ -11,6 +13,8 @@ function getCookie() {
 }
 const userName = getCookie();
 
+const nameArr = storageTasc.find(item =>item.name === userName )
+console.log(nameArr);
 const markup = `<div class="bg-white w-full sm:w-[85%] md:w-[80%] lg:w-[70%] max-w-5xl mt-[5%] rounded-t-3xl">
     <div class="flex flex-col sm:flex-row justify-between items-center sm:items-end gap-4 my-[5%] px-5 md:px-8">
     <h1 class="text-2xl sm:text-3xl font-bold text-center sm:text-left">
@@ -38,7 +42,24 @@ const markup = `<div class="bg-white w-full sm:w-[85%] md:w-[80%] lg:w-[70%] max
 
    `;
 
+
+   function displayStorage(nameArr) {
+     if (nameArr) {
+
+       const markup = `<div class="task-cart flex  bg-[#e5dede] p-5 rounded-xl mb-5 mx-5">
+           <p class="task-text text-xl text-${nameArr.task}-500">${nameArr.text}</p>
+           <div class="flex ml-auto gap-5 items-center">
+           <input type="checkbox" name="checed" class="checkbox-cart w-5 h-5">
+           <img class = "paint" src="src/publick/peint.png" alt="ручка">
+           <img class = "basket" src="src/publick/wastebasket.jpg" alt="корзина" class="mix-blend-multiply">
+           </div>
+           </div>`
+       document.querySelector(".wrapper-cart").insertAdjacentHTML("afterend",markup)
+     }
+
+   }
 const init = () => {
+  displayStorage(nameArr)
   const noTask = document.querySelector("#no-task");
   const formTask = document.querySelector("form");
   const wrapperCart = document.querySelector(".wrapper-cart");
@@ -51,22 +72,21 @@ const init = () => {
 
     const getFormData = Object.fromEntries(new FormData(formTask));
     const { text, task } = getFormData;
-    const arrUser=[]
     const userObj = {
       name: userName,
       text: text,
       task: task
     }
-    localStorage.setItem("user", JSON.stringify(arrUser));
-    const storage = JSON.parse(localStorage.getItem("user"))
-    console.log("--->",storage);
-    if (arrUser.length) {
-      const getStorage = JSON.parse(locationStorage("user"))
-      console.log("===>",getStorage);
+
+    if (storageTasc.length) {
+      const saveTasc = JSON.parse(localStorage.getItem("user"))
+      saveTasc.push(userObj)
+      localStorage.setItem("user",JSON.stringify(saveTasc))
+      console.log("===>",saveTasc);
     } else {
-      arrUser.push(userObj)
-      localStorage.setItem("user",JSON.stringify(arrUser))
-      console.log(arrUser);
+      storageTasc.push(userObj)
+      localStorage.setItem("user",JSON.stringify(storageTasc))
+      console.log("===>",storageTasc);
     }
 
     if (text !== "") {
@@ -115,4 +135,5 @@ const updateCart = () => {
 document.addEventListener("DOMContentLoaded", () => {
   body.insertAdjacentHTML("afterbegin", markup);
   init();
+  // displayStorage(nameArr)
 });
