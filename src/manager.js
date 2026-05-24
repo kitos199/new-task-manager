@@ -1,6 +1,6 @@
 const body = document.querySelector("body");
 
-const storageTasc =JSON.parse(localStorage.getItem("user")) || [];
+const storageTasc = JSON.parse(localStorage.getItem("user")) || [];
 
 function getCookie() {
   const cookieValue = document.cookie.split(";");
@@ -13,8 +13,8 @@ function getCookie() {
 }
 const userName = getCookie();
 
-const nameArr = storageTasc.find(item =>item.name === userName )
-console.log(nameArr);
+// const nameArr = storageTasc.find(item =>item.name === userName)
+// console.log(nameArr);
 const markup = `<div class="bg-white w-full sm:w-[85%] md:w-[80%] lg:w-[70%] max-w-5xl mt-[5%] rounded-t-3xl">
     <div class="flex flex-col sm:flex-row justify-between items-center sm:items-end gap-4 my-[5%] px-5 md:px-8">
     <h1 class="text-2xl sm:text-3xl font-bold text-center sm:text-left">
@@ -42,31 +42,37 @@ const markup = `<div class="bg-white w-full sm:w-[85%] md:w-[80%] lg:w-[70%] max
 
    `;
 
+const nameFilter = storageTasc.filter((item) => item.name === userName);
 
-   function displayStorage(nameArr) {
-     if (nameArr) {
+console.log(nameFilter);
+function displayStorage(nameFilter, noTask) {
+  if (nameFilter.length > 0) {
+    nameFilter.forEach((e) => {
+      const markup = `<div class="task-cart flex  bg-[#e5dede] p-5 rounded-xl mb-5 mx-5">
+             <p class="task-text text-xl text-${e.task}-500">${e.text}</p>
+             <div class="flex ml-auto gap-5 items-center">
+             <input type="checkbox" name="checed" class="checkbox-cart w-5 h-5">
+             <img class = "paint" src="src/publick/peint.png" alt="ручка">
+             <img class = "basket" src="src/publick/wastebasket.jpg" alt="корзина" class="mix-blend-multiply">
+             </div>
+             </div>`;
 
-       const markup = `<div class="task-cart flex  bg-[#e5dede] p-5 rounded-xl mb-5 mx-5">
-           <p class="task-text text-xl text-${nameArr.task}-500">${nameArr.text}</p>
-           <div class="flex ml-auto gap-5 items-center">
-           <input type="checkbox" name="checed" class="checkbox-cart w-5 h-5">
-           <img class = "paint" src="src/publick/peint.png" alt="ручка">
-           <img class = "basket" src="src/publick/wastebasket.jpg" alt="корзина" class="mix-blend-multiply">
-           </div>
-           </div>`
-       document.querySelector(".wrapper-cart").insertAdjacentHTML("afterend",markup)
-     }
-
-   }
+      document
+        .querySelector(".wrapper-cart")
+        .insertAdjacentHTML("afterend", markup);
+    });
+    noTask.remove();
+  }
+}
 const init = () => {
-  displayStorage(nameArr)
   const noTask = document.querySelector("#no-task");
   const formTask = document.querySelector("form");
   const wrapperCart = document.querySelector(".wrapper-cart");
   const exit = document.querySelector(".exit");
+  displayStorage(nameFilter, noTask);
   exit.addEventListener("click", () => {
-    location.href="outyput.html"
-  })
+    location.href = "outyput.html";
+  });
   formTask.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -75,18 +81,18 @@ const init = () => {
     const userObj = {
       name: userName,
       text: text,
-      task: task
-    }
+      task: task,
+    };
 
     if (storageTasc.length) {
-      const saveTasc = JSON.parse(localStorage.getItem("user"))
-      saveTasc.push(userObj)
-      localStorage.setItem("user",JSON.stringify(saveTasc))
-      console.log("===>",saveTasc);
+      const saveTasc = JSON.parse(localStorage.getItem("user"));
+      saveTasc.push(userObj);
+      localStorage.setItem("user", JSON.stringify(saveTasc));
+      console.log("===>", saveTasc);
     } else {
-      storageTasc.push(userObj)
-      localStorage.setItem("user",JSON.stringify(storageTasc))
-      console.log("===>",storageTasc);
+      storageTasc.push(userObj);
+      localStorage.setItem("user", JSON.stringify(storageTasc));
+      console.log("===>", storageTasc);
     }
 
     if (text !== "") {
@@ -98,36 +104,42 @@ const init = () => {
         <img class = "basket" src="src/publick/wastebasket.jpg" alt="корзина" class="mix-blend-multiply">
         </div>
         </div>`;
-        document
-        wrapperCart.insertAdjacentHTML("afterend", markup);
+      document;
+      wrapperCart.insertAdjacentHTML("afterend", markup);
       document.querySelector("#input-task").value = "";
-      updateCart()
+      updateCart();
       noTask.remove();
     }
   });
 };
 
 const updateCart = () => {
-  const taskCart = document.querySelector(".task-cart")
+  const taskCart = document.querySelector(".task-cart");
   taskCart.addEventListener("click", (e) => {
     if (e.target.classList.contains("paint")) {
-      const redact = prompt("Редактирование")
+      const redact = prompt("Редактирование");
       const taskCArt = e.target.closest(".task-cart");
       if (taskCart) {
-      taskCArt.querySelector(".task-text").textContent = `${redact}`
-     }
+        taskCArt.querySelector(".task-text").textContent = `${redact}`;
+      }
     } else if (e.target.classList.contains("basket")) {
-      taskCart.remove()
+      taskCart.remove();
     } else if (e.target.classList.contains("checkbox-cart")) {
       const anyChecked = taskCart.querySelector(".checkbox-cart:checked");
       console.log(anyChecked, e.target);
       if (anyChecked) {
-        e.target.closest(".task-cart").querySelector(".task-text").classList.add("line-through");
+        e.target
+          .closest(".task-cart")
+          .querySelector(".task-text")
+          .classList.add("line-through");
       } else {
-        e.target.closest(".task-cart").querySelector(".task-text").classList.remove("line-through");
+        e.target
+          .closest(".task-cart")
+          .querySelector(".task-text")
+          .classList.remove("line-through");
       }
     }
-  })
+  });
 };
 
 // localStorage.setItem()
