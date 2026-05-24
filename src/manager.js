@@ -60,6 +60,7 @@ function displayStorage(nameFilter, noTask) {
       document
         .querySelector(".wrapper-cart")
         .insertAdjacentHTML("afterend", markup);
+        updateCart();
     });
     noTask.remove();
   }
@@ -113,6 +114,7 @@ const init = () => {
   });
 };
 
+// Надо сделать что бы еще менялось в localStorage 
 const updateCart = () => {
   const taskCart = document.querySelector(".task-cart");
   taskCart.addEventListener("click", (e) => {
