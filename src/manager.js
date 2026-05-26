@@ -44,11 +44,11 @@ const markup = `<div class="bg-white w-full sm:w-[85%] md:w-[80%] lg:w-[70%] max
 
 const nameFilter = storageTasc.filter((item) => item.name === userName);
 
-console.log(nameFilter);
+// console.log(nameFilter);
 function displayStorage(nameFilter, noTask) {
   if (nameFilter.length > 0) {
     nameFilter.forEach((e) => {
-      const markup = `<div class="task-cart flex  bg-[#e5dede] p-5 rounded-xl mb-5 mx-5">
+      const markup = `<div id=${e.id} class="task-cart flex  bg-[#e5dede] p-5 rounded-xl mb-5 mx-5">
              <p class="task-text text-xl text-${e.task}-500">${e.text}</p>
              <div class="flex ml-auto gap-5 items-center">
              <input type="checkbox" name="checed" class="checkbox-cart w-5 h-5">
@@ -60,7 +60,7 @@ function displayStorage(nameFilter, noTask) {
       document
         .querySelector(".wrapper-cart")
         .insertAdjacentHTML("afterend", markup);
-        updateCart();
+      updateCart();
     });
     noTask.remove();
   }
@@ -80,42 +80,63 @@ const init = () => {
     const getFormData = Object.fromEntries(new FormData(formTask));
     const { text, task } = getFormData;
     const userObj = {
+      id: 0,
       name: userName,
-      text: text,
-      task: task,
+      text,
+      task,
     };
 
-    if (storageTasc.length) {
-      const saveTasc = JSON.parse(localStorage.getItem("user"));
-      saveTasc.push(userObj);
-      localStorage.setItem("user", JSON.stringify(saveTasc));
-      console.log("===>", saveTasc);
-    } else {
-      storageTasc.push(userObj);
-      localStorage.setItem("user", JSON.stringify(storageTasc));
-      console.log("===>", storageTasc);
-    }
-
-    if (text !== "") {
-      const markup = `<div class="task-cart flex  bg-[#e5dede] p-5 rounded-xl mb-5 mx-5">
-        <p class="task-text text-xl text-${task}-500">${text}</p>
-        <div class="flex ml-auto gap-5 items-center">
-        <input type="checkbox" name="checed" class="checkbox-cart w-5 h-5">
-        <img class = "paint" src="src/publick/peint.png" alt="ручка">
-        <img class = "basket" src="src/publick/wastebasket.jpg" alt="корзина" class="mix-blend-multiply">
-        </div>
-        </div>`;
-      document;
-      wrapperCart.insertAdjacentHTML("afterend", markup);
-      document.querySelector("#input-task").value = "";
-      updateCart();
+    const id = (obj) => {
+      const idLocal = JSON.parse(localStorage.getItem("user"));
+      if (idLocal) {
+        maxId = Math.max(
+          ...idLocal.map((item) => {
+            return item.id;
+          }),
+        );
+        obj.id = maxId + 1;
+        idLocal.push(obj);
+        localStorage.setItem("user", JSON.stringify(idLocal));
+        return obj.id;
+      } else {
+        storageTasc.push(obj);
+        localStorage.setItem("user", JSON.stringify(storageTasc));
+        return obj.id;
+      }
+    };
+    // console.log(id(userObj))
+    // if (storageTasc.length) {
+      //   const saveTasc = JSON.parse(localStorage.getItem("user"));
+      //   saveTasc.push(userObj);
+      //   localStorage.setItem("user", JSON.stringify(saveTasc));
+      //   // console.log("===>", saveTasc);
+      // } else {
+        //   storageTasc.push(userObj);
+        //   localStorage.setItem("user", JSON.stringify(storageTasc));
+        //   // console.log("===>", storageTasc);
+        // }
+        
+        if (text !== "") {
+          const idUser = id(userObj);
+          const markup = `<div id=${idUser} class="task-cart flex  bg-[#e5dede] p-5 rounded-xl mb-5 mx-5">
+          <p class="task-text text-xl text-${task}-500">${text}</p>
+          <div class="flex ml-auto gap-5 items-center">
+          <input type="checkbox" name="checed" class="checkbox-cart w-5 h-5">
+          <img class = "paint" src="src/publick/peint.png" alt="ручка">
+          <img class = "basket" src="src/publick/wastebasket.jpg" alt="корзина" class="mix-blend-multiply">
+          </div>
+          </div>`;
+          // id(userObj);
+          wrapperCart.insertAdjacentHTML("afterend", markup);
+          document.querySelector("#input-task").value = "";
+          updateCart(userObj);
       noTask.remove();
     }
   });
 };
 
-// Надо сделать что бы еще менялось в localStorage 
-const updateCart = () => {
+// Надо сделать что бы еще менялось в localStorage
+const updateCart = (userObj) => {
   const taskCart = document.querySelector(".task-cart");
   taskCart.addEventListener("click", (e) => {
     if (e.target.classList.contains("paint")) {
@@ -128,17 +149,23 @@ const updateCart = () => {
       taskCart.remove();
     } else if (e.target.classList.contains("checkbox-cart")) {
       const anyChecked = taskCart.querySelector(".checkbox-cart:checked");
-      console.log(anyChecked, e.target);
       if (anyChecked) {
         e.target
           .closest(".task-cart")
           .querySelector(".task-text")
           .classList.add("line-through");
+        // userObj.check = "checked";
+        const getCheckLoacalStorage = JSON.parse(localStorage.getItem("user"));
+        idCheck = getCheckLoacalStorage.map((item) => {
+          return item.id;
+        });
+        console.log(idCheck);
       } else {
         e.target
           .closest(".task-cart")
           .querySelector(".task-text")
           .classList.remove("line-through");
+        delete userObj.check;
       }
     }
   });
