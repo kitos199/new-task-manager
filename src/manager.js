@@ -70,9 +70,11 @@ const init = () => {
   const formTask = document.querySelector("form");
   const wrapperCart = document.querySelector(".wrapper-cart");
   const exit = document.querySelector(".exit");
+
   displayStorage(nameFilter, noTask);
   exit.addEventListener("click", () => {
     location.href = "outyput.html";
+
   });
   formTask.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -115,7 +117,7 @@ const init = () => {
         //   localStorage.setItem("user", JSON.stringify(storageTasc));
         //   // console.log("===>", storageTasc);
         // }
-        
+
         if (text !== "") {
           const idUser = id(userObj);
           const markup = `<div id=${idUser} class="task-cart flex  bg-[#e5dede] p-5 rounded-xl mb-5 mx-5">
@@ -154,12 +156,14 @@ const updateCart = (userObj) => {
           .closest(".task-cart")
           .querySelector(".task-text")
           .classList.add("line-through");
-        // userObj.check = "checked";
-        const getCheckLoacalStorage = JSON.parse(localStorage.getItem("user"));
-        idCheck = getCheckLoacalStorage.map((item) => {
-          return item.id;
-        });
-        console.log(idCheck);
+          // userObj.check = "checked";
+          const getCheckLoacalStorage = JSON.parse(localStorage.getItem("user"));
+        const click = Number(e.target.closest(".task-cart").getAttribute("id"));
+        const idMapCheckout = getCheckLoacalStorage.find(item => item.id === click)
+        // console.log(idMapCheckout.check = "checked");
+        // getCheckLoacalStorage.push(idMapCheckout.check = "checked")
+        localStorage.setItem("user",JSON.stringify(getCheckLoacalStorage))
+        console.log(getCheckLoacalStorage);
       } else {
         e.target
           .closest(".task-cart")
