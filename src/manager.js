@@ -48,7 +48,22 @@ const nameFilter = storageTasc.filter((item) => item.name === userName);
 function displayStorage(nameFilter, noTask) {
   if (nameFilter.length > 0) {
     nameFilter.forEach((e) => {
-      const markup = `<div id=${e.id} class="task-cart flex  bg-[#e5dede] p-5 rounded-xl mb-5 mx-5">
+      if (e.chek === "checked") {
+        const markup = `<div id=${e.id} class="task-cart flex  bg-[#e5dede] p-5 rounded-xl mb-5 mx-5">
+             <p class="task-text text-xl text-${e.task}-500 line-through">${e.text}</p>
+             <div class="flex ml-auto gap-5 items-center">
+             <input type="checkbox" name="checed" class="checkbox-cart w-5 h-5" checked>
+             <img class = "paint" src="src/publick/peint.png" alt="ручка">
+             <img class = "basket" src="src/publick/wastebasket.jpg" alt="корзина" class="mix-blend-multiply">
+             </div>
+             </div>`;
+
+      document
+        .querySelector(".wrapper-cart")
+        .insertAdjacentHTML("afterend", markup);
+      updateCart();
+      } else {
+        const markup = `<div id=${e.id} class="task-cart flex  bg-[#e5dede] p-5 rounded-xl mb-5 mx-5">
              <p class="task-text text-xl text-${e.task}-500">${e.text}</p>
              <div class="flex ml-auto gap-5 items-center">
              <input type="checkbox" name="checed" class="checkbox-cart w-5 h-5">
@@ -61,7 +76,9 @@ function displayStorage(nameFilter, noTask) {
         .querySelector(".wrapper-cart")
         .insertAdjacentHTML("afterend", markup);
       updateCart();
-    });
+      }
+
+    })
     noTask.remove();
   }
 }
@@ -128,7 +145,6 @@ const init = () => {
           <img class = "basket" src="src/publick/wastebasket.jpg" alt="корзина" class="mix-blend-multiply">
           </div>
           </div>`;
-          // id(userObj);
           wrapperCart.insertAdjacentHTML("afterend", markup);
           document.querySelector("#input-task").value = "";
           updateCart(userObj);
@@ -156,20 +172,28 @@ const updateCart = (userObj) => {
           .closest(".task-cart")
           .querySelector(".task-text")
           .classList.add("line-through");
-          // userObj.check = "checked";
           const getCheckLoacalStorage = JSON.parse(localStorage.getItem("user"));
         const click = Number(e.target.closest(".task-cart").getAttribute("id"));
-        const idMapCheckout = getCheckLoacalStorage.find(item => item.id === click)
-        // console.log(idMapCheckout.check = "checked");
-        // getCheckLoacalStorage.push(idMapCheckout.check = "checked")
-        localStorage.setItem("user",JSON.stringify(getCheckLoacalStorage))
-        console.log(getCheckLoacalStorage);
+        const idMapCheckout = getCheckLoacalStorage.find((item) => {
+          if (item.id === click) {
+            return item.chek="checked"
+          }
+        })
+        localStorage.setItem("user", JSON.stringify(getCheckLoacalStorage))
       } else {
         e.target
           .closest(".task-cart")
           .querySelector(".task-text")
           .classList.remove("line-through");
-        delete userObj.check;
+        const getCheckLoacalStorage = JSON.parse(localStorage.getItem("user"));
+        const click = Number(e.target.closest(".task-cart").getAttribute("id"));
+        const idMapCheckout = getCheckLoacalStorage.find((item) => {
+          if (item.id === click) {
+            delete item.chek
+            return item
+          }
+        })
+        localStorage.setItem("user", JSON.stringify(getCheckLoacalStorage))
       }
     }
   });
