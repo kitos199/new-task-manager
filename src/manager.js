@@ -156,14 +156,30 @@ const init = () => {
 // Надо сделать что бы еще менялось в localStorage
 const updateCart = (userObj) => {
   const taskCart = document.querySelector(".task-cart");
+
   taskCart.addEventListener("click", (e) => {
+    const click = Number(e.target.closest(".task-cart").getAttribute("id"));
     if (e.target.classList.contains("paint")) {
       const redact = prompt("Редактирование");
-      const taskCArt = e.target.closest(".task-cart");
-      if (taskCart) {
-        taskCArt.querySelector(".task-text").textContent = `${redact}`;
+      if (taskCart && redact) {
+        const localStoragePaint = JSON.parse(localStorage.getItem("user"))
+        localStoragePaint.find((item) => {
+          if (item.id === click) {
+            return item.text=redact
+          }
+        })
+        taskCart.querySelector(".task-text").textContent = `${redact}`;
       }
     } else if (e.target.classList.contains("basket")) {
+      const localStorageBasket = JSON.parse(localStorage.getItem("user"))
+//       localStorageBasket.filter((item) => {
+//         if (item.id !== click) {
+// console.log(item);
+//         }
+      //       })
+
+      console.log(localStorageBasket);
+      localStorage.setItem("user",JSON.stringify(localStorageBasket))
       taskCart.remove();
     } else if (e.target.classList.contains("checkbox-cart")) {
       const anyChecked = taskCart.querySelector(".checkbox-cart:checked");
@@ -173,7 +189,6 @@ const updateCart = (userObj) => {
           .querySelector(".task-text")
           .classList.add("line-through");
           const getCheckLoacalStorage = JSON.parse(localStorage.getItem("user"));
-        const click = Number(e.target.closest(".task-cart").getAttribute("id"));
         const idMapCheckout = getCheckLoacalStorage.find((item) => {
           if (item.id === click) {
             return item.chek="checked"
@@ -186,7 +201,7 @@ const updateCart = (userObj) => {
           .querySelector(".task-text")
           .classList.remove("line-through");
         const getCheckLoacalStorage = JSON.parse(localStorage.getItem("user"));
-        const click = Number(e.target.closest(".task-cart").getAttribute("id"));
+        // const click = Number(e.target.closest(".task-cart").getAttribute("id"));
         const idMapCheckout = getCheckLoacalStorage.find((item) => {
           if (item.id === click) {
             delete item.chek
