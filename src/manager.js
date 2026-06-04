@@ -1,6 +1,5 @@
 const body = document.querySelector("body");
 
-const storageTasc = JSON.parse(localStorage.getItem("user")) || [];
 
 function getCookie() {
   const cookieValue = document.cookie.split(";");
@@ -12,9 +11,7 @@ function getCookie() {
   return userName;
 }
 const userName = getCookie();
-
-// const nameArr = storageTasc.find(item =>item.name === userName)
-// console.log(nameArr);
+const storageTasc = JSON.parse(localStorage.getItem("user")) || [];
 const markup = `<div class="bg-white w-full sm:w-[85%] md:w-[80%] lg:w-[70%] max-w-5xl mt-[5%] rounded-t-3xl">
     <div class="flex flex-col sm:flex-row justify-between items-center sm:items-end gap-4 my-[5%] px-5 md:px-8">
     <h1 class="text-2xl sm:text-3xl font-bold text-center sm:text-left">
@@ -43,7 +40,6 @@ const markup = `<div class="bg-white w-full sm:w-[85%] md:w-[80%] lg:w-[70%] max
    `;
 
 const nameFilter = storageTasc.filter((item) => item.name === userName);
-
 // console.log(nameFilter);
 function displayStorage(nameFilter, noTask) {
   if (nameFilter.length > 0) {
@@ -105,17 +101,16 @@ const init = () => {
       task,
     };
 
-    const id = (obj) => {
-      const idLocal = JSON.parse(localStorage.getItem("user"));
-      if (idLocal) {
+    const getId = (obj) => {
+      if (storageTasc.length > 0) {
         maxId = Math.max(
-          ...idLocal.map((item) => {
+          ...storageTasc.map((item) => {
             return item.id;
           }),
         );
         obj.id = maxId + 1;
-        idLocal.push(obj);
-        localStorage.setItem("user", JSON.stringify(idLocal));
+        storageTasc.push(obj);
+        localStorage.setItem("user", JSON.stringify(storageTasc));
         return obj.id;
       } else {
         storageTasc.push(obj);
@@ -123,20 +118,9 @@ const init = () => {
         return obj.id;
       }
     };
-    // console.log(id(userObj))
-    // if (storageTasc.length) {
-      //   const saveTasc = JSON.parse(localStorage.getItem("user"));
-      //   saveTasc.push(userObj);
-      //   localStorage.setItem("user", JSON.stringify(saveTasc));
-      //   // console.log("===>", saveTasc);
-      // } else {
-        //   storageTasc.push(userObj);
-        //   localStorage.setItem("user", JSON.stringify(storageTasc));
-        //   // console.log("===>", storageTasc);
-        // }
 
         if (text !== "") {
-          const idUser = id(userObj);
+          const idUser = getId(userObj);
           const markup = `<div id=${idUser} class="task-cart flex  bg-[#e5dede] p-5 rounded-xl mb-5 mx-5">
           <p class="task-text text-xl text-${task}-500">${text}</p>
           <div class="flex ml-auto gap-5 items-center">
@@ -172,8 +156,15 @@ const updateCart = (userObj) => {
       }
     } else if (e.target.classList.contains("basket")) {
       const localStorageBasket = JSON.parse(localStorage.getItem("user"))
-      localStorageBasket.splice(click,1)
-      localStorage.setItem("user",JSON.stringify(localStorageBasket))
+      const deleteLocalStorage = localStorageBasket.filter((item) => {
+        if (item.id !== click) {
+          return item
+        } else {
+          console.log("--->",item);
+        }
+      })
+      console.log(deleteLocalStorage);
+      localStorage.setItem("user",JSON.stringify(deleteLocalStorage))
       taskCart.remove();
     } else if (e.target.classList.contains("checkbox-cart")) {
       const anyChecked = taskCart.querySelector(".checkbox-cart:checked");
@@ -195,7 +186,6 @@ const updateCart = (userObj) => {
           .querySelector(".task-text")
           .classList.remove("line-through");
         const getCheckLoacalStorage = JSON.parse(localStorage.getItem("user"));
-        // const click = Number(e.target.closest(".task-cart").getAttribute("id"));
         const idMapCheckout = getCheckLoacalStorage.find((item) => {
           if (item.id === click) {
             delete item.chek
@@ -208,10 +198,8 @@ const updateCart = (userObj) => {
   });
 };
 
-// localStorage.setItem()
 
 document.addEventListener("DOMContentLoaded", () => {
   body.insertAdjacentHTML("afterbegin", markup);
   init();
-  // displayStorage(nameArr)
 });
