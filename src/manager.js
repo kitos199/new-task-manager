@@ -172,13 +172,7 @@ const updateCart = (userObj) => {
       }
     } else if (e.target.classList.contains("basket")) {
       const localStorageBasket = JSON.parse(localStorage.getItem("user"))
-//       localStorageBasket.filter((item) => {
-//         if (item.id !== click) {
-// console.log(item);
-//         }
-      //       })
-
-      console.log(localStorageBasket);
+      localStorageBasket.splice(click,1)
       localStorage.setItem("user",JSON.stringify(localStorageBasket))
       taskCart.remove();
     } else if (e.target.classList.contains("checkbox-cart")) {
