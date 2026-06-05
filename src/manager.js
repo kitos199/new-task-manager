@@ -85,10 +85,12 @@ const init = () => {
   const exit = document.querySelector(".exit");
 
   displayStorage(nameFilter, noTask);
-  exit.addEventListener("click", () => {
-    location.href = "outyput.html";
 
+  exit.addEventListener("click", () => {
+    document.cookie = "authUser=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+    location.href = "outyput.html";
   });
+
   formTask.addEventListener("submit", (e) => {
     e.preventDefault();
 
