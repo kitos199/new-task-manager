@@ -40,7 +40,7 @@ const markup = `<div class="bg-white w-full sm:w-[85%] md:w-[80%] lg:w-[70%] max
    `;
 
 const nameFilter = storageTasc.filter((item) => item.name === userName);
-// console.log(nameFilter);
+console.log(nameFilter);
 function displayStorage(nameFilter, noTask) {
   if (nameFilter.length > 0) {
     nameFilter.forEach((e) => {
@@ -76,6 +76,10 @@ function displayStorage(nameFilter, noTask) {
 
     })
     noTask.remove();
+  } else {
+    // document.querySelector(".wrapper-cart")
+    //     .insertAdjacentHTML("afterend", )
+    // console.log(135);
   }
 }
 const init = () => {
@@ -134,6 +138,7 @@ const init = () => {
           wrapperCart.insertAdjacentHTML("afterend", markup);
           document.querySelector("#input-task").value = "";
           updateCart(userObj);
+
       noTask.remove();
     }
   });
@@ -154,6 +159,7 @@ const updateCart = (userObj) => {
             return item.text=redact
           }
         })
+        localStorage.setItem("user",JSON.stringify(localStoragePaint))
         taskCart.querySelector(".task-text").textContent = `${redact}`;
       }
     } else if (e.target.classList.contains("basket")) {
@@ -188,7 +194,7 @@ const updateCart = (userObj) => {
           .querySelector(".task-text")
           .classList.remove("line-through");
         const getCheckLoacalStorage = JSON.parse(localStorage.getItem("user"));
-        const idMapCheckout = getCheckLoacalStorage.find((item) => {
+        getCheckLoacalStorage.find((item) => {
           if (item.id === click) {
             delete item.chek
             return item
