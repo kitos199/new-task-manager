@@ -77,9 +77,8 @@ function displayStorage(nameFilter, noTask) {
     })
     noTask.remove();
   } else {
-    // document.querySelector(".wrapper-cart")
-    //     .insertAdjacentHTML("afterend", )
-    // console.log(135);
+
+    console.log(135);
   }
 }
 const init = () => {
@@ -167,11 +166,16 @@ const updateCart = (userObj) => {
       const deleteLocalStorage = localStorageBasket.filter((item) => {
         if (item.id !== click) {
           return item
-        } else {
-          console.log("--->",item);
         }
       })
-      console.log(deleteLocalStorage);
+      // console.log("===>",deleteLocalStorage,localStorageBasket);
+      if (deleteLocalStorage.length === 0) {
+        document.querySelector("form").insertAdjacentHTML("afterend",`<div id = "no-task" class="flex flex-col px-5 md:px-8 pb-8">
+        <p class="text-xl px-5 md:px-8 pb-8">Нет задач</p>
+    </div>`)
+      } else {
+        console.log(1);
+      }
       localStorage.setItem("user",JSON.stringify(deleteLocalStorage))
       taskCart.remove();
     } else if (e.target.classList.contains("checkbox-cart")) {
