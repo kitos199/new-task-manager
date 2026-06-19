@@ -1,6 +1,6 @@
 const wrapper = document.querySelector(".wrapper");
 
-const markup = ` <h1> task manager</h1>
+const markup = ` <h1 class="text-3xl"> task manager</h1>
         <p>Войдите, чтобы управлять своими задачами</p>
         <form action="" class="form-output">
             <input class="login" type="text" name="name" placeholder="Ваше имя">

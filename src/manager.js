@@ -45,28 +45,28 @@ function displayStorage(nameFilter, noTask) {
   if (nameFilter.length > 0) {
     nameFilter.forEach((e) => {
       if (e.chek === "checked") {
-        const markup = `<div id=${e.id} class="task-cart flex  bg-[#e5dede] p-5 rounded-xl mb-5 mx-5">
-             <p class="task-text text-xl text-${e.task}-500 line-through">${e.text}</p>
-             <div class="flex ml-auto gap-5 items-center">
-             <input type="checkbox" name="checed" class="checkbox-cart w-5 h-5" checked>
-             <img class = "paint" src="src/publick/peint.png" alt="ручка">
-             <img class = "basket" src="src/publick/wastebasket.jpg" alt="корзина" class="mix-blend-multiply">
-             </div>
-             </div>`;
+        const markup = ` <div id=${e.id} class="task-cart flex bg-[#e5dede] p-5 rounded-xl mb-5 mx-5">
+    <p class="task-text text-xl text-${e.task}-500 flex-1 min-w-0 truncate">${e.text}</p>
+    <div class="flex ml-auto gap-5 items-center shrink-0">
+      <input type="checkbox" name="checed" class="checkbox-cart w-5 h-5">
+      <img class="paint w-5 h-5" src="src/publick/peint.png" alt="ручка">
+      <img class="basket w-5 h-5" src="src/publick/wastebasket.jpg" alt="корзина">
+    </div>
+  </div>`;
 
       document
         .querySelector(".wrapper-cart")
         .insertAdjacentHTML("afterend", markup);
       updateCart();
       } else {
-        const markup = `<div id=${e.id} class="task-cart flex  bg-[#e5dede] p-5 rounded-xl mb-5 mx-5">
-             <p class="task-text text-xl text-${e.task}-500">${e.text}</p>
-             <div class="flex ml-auto gap-5 items-center">
-             <input type="checkbox" name="checed" class="checkbox-cart w-5 h-5">
-             <img class = "paint" src="src/publick/peint.png" alt="ручка">
-             <img class = "basket" src="src/publick/wastebasket.jpg" alt="корзина" class="mix-blend-multiply">
-             </div>
-             </div>`;
+        const markup = ` <div id=${e.id} class="task-cart flex bg-[#e5dede] p-5 rounded-xl mb-5 mx-5">
+    <p class="task-text text-xl text-${e.task}-500 flex-1 min-w-0 truncate">${e.text}</p>
+    <div class="flex ml-auto gap-5 items-center shrink-0">
+      <input type="checkbox" name="checed" class="checkbox-cart w-5 h-5">
+      <img class="paint w-5 h-5" src="src/publick/peint.png" alt="ручка">
+      <img class="basket w-5 h-5" src="src/publick/wastebasket.jpg" alt="корзина">
+    </div>
+  </div>`;
 
       document
         .querySelector(".wrapper-cart")
@@ -126,14 +126,14 @@ const init = () => {
 
         if (text !== "") {
           const idUser = getId(userObj);
-          const markup = `<div id=${idUser} class="task-cart flex  bg-[#e5dede] p-5 rounded-xl mb-5 mx-5">
-          <p class="task-text text-xl text-${task}-500">${text}</p>
-          <div class="flex ml-auto gap-5 items-center">
-          <input type="checkbox" name="checed" class="checkbox-cart w-5 h-5">
-          <img class = "paint" src="src/publick/peint.png" alt="ручка">
-          <img class = "basket" src="src/publick/wastebasket.jpg" alt="корзина" class="mix-blend-multiply">
-          </div>
-          </div>`;
+          const markup = ` <div id=${idUser} class="task-cart flex bg-[#e5dede] p-5 rounded-xl mb-5 mx-5">
+    <p class="task-text text-xl text-${task}-500 flex-1 min-w-0 truncate">${text}</p>
+    <div class="flex ml-auto gap-5 items-center shrink-0">
+      <input type="checkbox" name="checed" class="checkbox-cart w-5 h-5">
+      <img class="paint w-5 h-5" src="src/publick/peint.png" alt="ручка">
+      <img class="basket w-5 h-5" src="src/publick/wastebasket.jpg" alt="корзина">
+    </div>
+  </div>`;
           wrapperCart.insertAdjacentHTML("afterend", markup);
           document.querySelector("#input-task").value = "";
           updateCart(userObj);
