@@ -91,7 +91,7 @@ const init = () => {
 
   exit.addEventListener("click", () => {
     document.cookie = "authUser=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
-    location.href = "outyput.html";
+    location.href = "index.html";
   });
 
   formTask.addEventListener("submit", (e) => {
